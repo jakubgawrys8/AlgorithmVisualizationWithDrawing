@@ -1,0 +1,212 @@
+The open list must be initialized. 
+Put the starting node on the open list (leave its f at zero). Initialize the closed list. 
+Follow the steps until the open list is non-empty:
+
+1. Find the node with the least f on the open list and name it “q”.
+2. Remove Q from the open list.
+
+3. Produce q's eight descendants and set q as their parent. (lista successors)
+
+4. For every descendant: (z 8) (descendant to successor)
+i) If finding a successor is the goal, cease looking (jesli successor == goal)
+
+ii)Else, calculate g and h for the successor.
+
+successor.g = q.g + the calculated distance between the successor and the q.
+successor.h = the calculated distance between the successor and the goal. We will cover three heuristics to do this: the Diagonal, the Euclidean, and the Manhattan heuristics.
+successor.f = successor.g plus successor.h
+
+iii) Skip this successor if a node in the OPEN list with the same location as it but a lower f value than the successor is present.
+
+iv) Skip the successor if there is a node in the CLOSED list with the same position as the successor but a lower f value; otherwise, add the node to the open list end (for loop).
+
+Push Q into the closed list and end the while loop.
+
+
+--------------------
+Step1: Place the starting node in the OPEN list.
+
+Step 2: Check if the OPEN list is empty or not, if the list is empty then return failure and stops.
+
+Step 3: Select the node from the OPEN list which has the smallest value of evaluation function (g+h), if node n is goal node then return success and stop, otherwise
+
+
+Step 4: Expand node n and generate all of its successors, and put n into the closed list. 
+For each successor n', check whether n' is already in the OPEN or CLOSED list, if not then compute evaluation function for n' and place into Open list.
+
+Step 5: Else if node n' is already in OPEN and CLOSED, then it should be attached to the back pointer which reflects the lowest g(n') value.
+--------------------
+
+
+
+
+
+jesli obok ma punkt to 0.1 dodaj
+- nie bedzie generowac w gore/lewo
+
+
+g - odleglosc od startowego punktu (bez terenu)
+h - odleglosc od koncowego punktu (bez terenu)
+f - g+h
+
+1. wybierz successor z najmniejszym f
+	- na czerwono go maluje
+
+1. punkt startowy
+	- generuj successors
+	- wybierz z najmniejszym f
+	- maluje go na czerwono
+	- generuj successors czerwonego
+	- wybierz z najmniejszym f -> najmniejszym h (z calej mapy) -> przetworzyc wszystkie najnizsze
+	- na czerwono, itd.
+
+
+Parent - moze srodkowy element miedzy 8
+
+
+yet to visit list = 
+
+q -> start
+successor.g = q.g + distance between q and start
+
+
+czerwone nody = mark as closed
+
+
+wybór node'a: lowest f -> (jak >1 to lowest h) -> (jak te same f i h to random)
+patrzy na całą listę successors (not closed)
+ścieżka liczona po closed nodes
+
+
+
+successor.g = q.g + the calculated distance between the successor and the q.
+recalculate g 
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+przechodzi gdziekolwiek, a nie do neighbora
+nie znajduje ending_node (openList się kończy)
+
+
+wypełnia mapę najpierw, 
+potem pewnie po najniższych f'ach (po drodze) znajduje path
+
+
+
+path = current (zapisuj)
+
+
+openList - przerobić na tylko neighbors
+
+---------------------------------------
+- final path - po parentach - 
+- rysowanie wszystkich nodow
+- reczne zaznaczanie start i end -> start game
+-
+
+
+wszystkie neighbors do open list przy calc
+final path -> po parentach
+
+nowy algorytm z filmiku:
+1. dodaj startNode do closedListy
+2. dodaj wszystkich neighbors do openListy
+3. wybierz neighbor -> ustaw current -> dodaj do closed -> licz neighbors -> szukaj po f/h
+
+4. podmieniac parent przy recalculate -> ostatniego majacego parenta przypisac jako parenta nowego przeliczonego
+
+Do zrobienia: 
+1. Na koncu niepotrzebny render ostatni
+
+
+final path (found by following the lineage of parents)
+- parenty kiedy zapisywac ()
+- 
+
+algorytm sprawdza dla kazdego neighboura czy g jest mniejsze (szybciej dojsc od startu) 
+(pozniej parenta musi ustawic tak zeby lineage byl po nodach z najmniejszym G na czerwonym)
+
+
+zla opcja - moglby byc wybierany po najnizszym h z neighborow (node chyba musialby miec zapisanych neighborów / szukaj majacych tego parenta)
+
+
+recalculate_distances - sprawdza czy path od start do neighbour jest krotszy niz 
+dla wszystkich neighborow algorytm przeszukuje zeby sprawdzic czy jest taniej dotrzec do 
+
+
+
+
+---
+musze sprawdzic ktory node jest parentem
+
+
+-------------------------
+że chyba nie powinien przy szukaniu sprawdzać po h (że sprawdza po f, wiec h tez)
+
+
+-------------------------------------------------------------------------------------------------
+musze ustalic ktory parent dla danego node'a
+
+----
+dlaczego dla danego node'a 
+
+ze moge dla kazdego neighbora ustawic parenta
+
+jak znalezc patha po parentach: od konca wypisac parentow : czy musi byc u 1 neigbora parent?
+
+Parentem moze byc jeden albo drugi sasiad
+
+dla kazdego neighbora szuka czy taniej dotrzec do niego (tego node'a) z aktualnego czy poprzedniego
+(dlaczego nie startowy?)
+
+dla kazdego neighbora:
+czy g mniejsze 
+
+
+
+------------
+że bez terrainu i ciekawe czy kalkuluje
+
+------------
+że algorytm mógłby robić update_distances tylko jeśli ten node jest na openLiście
+1. jak to zrobić
+- dlaczego wszystkie openNody maja parenta? - zrobione
+- 
+
+potencjalnie przy update ustawiać parenta (musi wyjść z tego path)
+
+
+1. dlaczego nadpisuje x,y - generuje kolejny raz ten sam rect - (ten sam )
+2. 
+3. jak generowac path parentow
+
+-------
+- aktualizuje na wieksze wartosci niz poprzednio (chyba nadpisuje ten sam kwadrat przy innych current_nodach - powinien tylko jak ma g mniejsze) '
+-> zle wylicza new_path - znalezc wzory
+dla wszystkich neighborow sprawdza czy krotsza droga zeby dotrzec 
+- 
+
+liczenie g - dla roznych parentow i w zalenosci u ktorego krotsza droga to takiego parenta przypisac
+
+jak liczyc g 
+- u mnie na wzorze jest liczona odleglosc bez terrainu najkrotsza do startu
+- a na filmie liczona jest po closedNodach i bierze pod uwage parenta (chyba sumy robi) (nie bierze terraina pod uwage) 
+na filmie -> wszystkie g liczone przez g do parenta + g parenta (jesli jest na openList to nie updatuj)
+
+nieghbors za wysokie wartosci g, chyba update_neighbor_distances zle dziala - ma dzialac tylko jak zmniejsza g
+najpierw liczenie poprawne, potem parenty
+
+
+moze dla pierwszego niech wyliczy, a potem tylko update
+
+
+---
+do zrobienia:
+
+1. mryganie render - (zmienia na chwile na zielony) - jak nie zmienia tez mryga
+2. czasem final path zly
